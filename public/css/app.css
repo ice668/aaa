@@ -10893,3 +10893,23 @@ nav.navbar.navbar-expand-lg {
   margin-bottom: 40px;
 }
 
+.navbar-inverse {
+  background-color: green;
+}
+
+body div {
+  color: red;
+}
+
+body h1 {
+  margin-top: 20px;
+}
+
+a {
+  color: mauve;
+}
+
+a:hover {
+  color: blue;
+}
+
