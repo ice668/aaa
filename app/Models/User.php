@@ -13,7 +13,7 @@ class User extends Authenticatable
 
     /**
      * The attributes that are mass assignable.
-     *
+     *大幅度发
      * @var array
      */
 
