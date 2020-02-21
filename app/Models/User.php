@@ -1,13 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+//Authenticatable(认证) 是授权相关功能的引用
 class User extends Authenticatable
 {
+//Notifiable（依法须上报的） 是消息通知相关功能引用
     use Notifiable;
 
     /**
@@ -15,6 +16,7 @@ class User extends Authenticatable
      *
      * @var array
      */
+
     protected $fillable = [
         'name', 'email', 'password',
     ];
