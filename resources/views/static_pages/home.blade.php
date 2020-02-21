@@ -11,7 +11,7 @@
     </p>
 
     <p>
-      <a class="btn btn-lg btn-success" href="#" role="button">注册个jiji？</a>
+      <a class="btn btn-lg btn-success" href="{{ route('signup') }}" role="button">注册个jiji？</a>
     </p>
   </div>
 @stop
