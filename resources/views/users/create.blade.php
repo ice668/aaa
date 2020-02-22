@@ -10,6 +10,7 @@
     @include('shared._errors')
     <div class="card-body">
       <form method="POST" action="{{ route('users.store') }}">
+<!-- 在我们使用 POST 方法提交表单时，Laravel 为了安全考虑，会让我们提供一个 token（令牌）来防止我们的应用受到 CSRF（跨站请求伪造）的攻击。修复该异常的方法很简单，我们只需要在表单元素中添加 Blade 模板为我们提供的 csrf_field 方法即可 -->
       	{{ csrf_field() }}
           <div class="form-group">
             <label for="name">名称：</label>
