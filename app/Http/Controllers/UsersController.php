@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Auth;
+
 
 class UsersController extends Controller
 {
@@ -42,7 +44,26 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
         Auth::login($user);
     	session()->flash('info', '由于 HTTP 协议是无状态的，所以 Laravel 提供了一种用于临时保存用户数据的方法 - 会话（Session），并附带支持多种会话后端驱动，可通过统一的 API 进行使用~');
         /*（重新调配）*/
-        return redirect()->route('users.show', [$user->id]);
+        return redirect()->route('users.show', [$user]);
 	}
 
+    public function edit(User $user)
+    {
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(User $user, Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:50',
+            'password' => 'required|confirmed|min:6'
+        ]);
+
+        $user->update([
+            'name' => $request->name,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return redirect()->route('users.show', $user->id);
+    }
 }

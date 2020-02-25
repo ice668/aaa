@@ -18,8 +18,8 @@ class SessionsController extends Controller
            'email' => 'required|email|max:255',
            'password' => 'required'
        ]);
-
-        if (Auth::attempt($credentials)) {
+// 前面我们介绍过的 Auth::attempt() 方法可接收两个参数，第一个参数为需要进行用户身份认证的数组，第二个参数为是否为用户开启『记住我』功能的布尔值。接下来让我们修改会话控制器中的 store 方法，为 Auth::attempt() 添加『记住我』参数。
+        if (Auth::attempt($credentials, $request->has('remember'))) {
         	 session()->flash('success', '欢迎回来！');
         	 return redirect()->route('users.show', [Auth::user()]);
            // 重新调配Auth::user() 方法来获取 当前登录用户 的信息，并将数据传送给路由
