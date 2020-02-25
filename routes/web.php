@@ -13,7 +13,7 @@
 /*
 我们使用路由来定义 URL 和 URL 的请求方式，再将该 URL 分配到相对应的控制器动作中进行处理
 get 表明这个路由将会响应 GET 请求，并将请求映射到指定的控制器动作上home方法*/
-Route::get('/', 'StaticPagesController@home');
+Route::get('/', 'StaticPagesController@home')->name('home');
 Route::get('/help', 'StaticPagesController@help')->name('help');
 Route::get('/about', 'StaticPagesController@about')->name('about');
 Route::get('/signup', 'UsersController@create')->name('signup');

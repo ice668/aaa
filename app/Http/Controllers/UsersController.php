@@ -38,6 +38,8 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
             'password' => $request->password,
         ]);
 /*我们可以使用 session() 方法来访问会话实例。而当我们想存入一条缓存的数据，让它只在下一次的请求内有效时，则可以使用 flash 方法。flash 方法接收两个参数，第一个为会话的键，第二个为会话的值，我们可以通过下面这行代码的为会话赋值 */   
+// 在 Laravel 中，如果要让一个已认证通过的用户实例进行登录，可以使用以下方法
+        Auth::login($user);
     	session()->flash('info', '由于 HTTP 协议是无状态的，所以 Laravel 提供了一种用于临时保存用户数据的方法 - 会话（Session），并附带支持多种会话后端驱动，可通过统一的 API 进行使用~');
         /*（重新调配）*/
         return redirect()->route('users.show', [$user->id]);
