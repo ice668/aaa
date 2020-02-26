@@ -48,12 +48,14 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
 	}
 
     public function edit(User $user)
-    {
+    {//（批准）
+         $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
 
     public function update(User $user, Request $request)
     {
+        $this->authorize('update', $user);
         $this->validate($request, [
             'name' => 'required|max:50',
             'password' => 'required|confirmed|min:6'
@@ -63,7 +65,21 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
             'name' => $request->name,
             'password' => bcrypt($request->password),
         ]);
-
+        session()->flash('success', '个人资料更新成功！');
         return redirect()->route('users.show', $user->id);
     }
+
+    public function __construct()
+        { //auth认证
+        $this->middleware('auth', [            
+            'except' => ['show', 'create', 'store']
+        ]);
+        //guest客人
+        //只让未登录用户访问注册页面：
+        $this->middleware('guest', [
+            'only' => ['create']
+        ]);
+        }    
+
+
 }
