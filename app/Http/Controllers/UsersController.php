@@ -70,16 +70,22 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
     }
 
     public function __construct()
-        { //auth认证
+        { //auth认证 （中间件）
         $this->middleware('auth', [            
-            'except' => ['show', 'create', 'store']
+            'except' => ['show', 'create', 'store','index']
         ]);
         //guest客人
         //只让未登录用户访问注册页面：
         $this->middleware('guest', [
             'only' => ['create']
         ]);
-        }    
+        }  
+        public function index()
+        {
+        $users = User::all();
+        $users = User::paginate(10);
+        return view('users.index', compact('users'));
+        }  
 
 
 }
