@@ -2,7 +2,6 @@
   <div class="container ">
     <a class="navbar-brand" href="{{ route('home') }}">Weibo App</a>
     <ul class="navbar-nav justify-content-end">
-    	<!-- aravel 提供了 Auth::check() 方法用于判断当前用户是否已登录，已登录返回 true，未登录返回 false -->
       @if (Auth::check())
         <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">用户列表</a></li>
         <li class="nav-item dropdown">

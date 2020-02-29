@@ -80,12 +80,19 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
             'only' => ['create']
         ]);
         }  
-        public function index()
+    public function index()
         {
-        $users = User::all();
+        //$users = User::all();
         $users = User::paginate(10);
         return view('users.index', compact('users'));
         }  
 
+    public function destroy(User $user)
+    {
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('success', '成功删除用户！');
+        return back();
+    }
 
 }
