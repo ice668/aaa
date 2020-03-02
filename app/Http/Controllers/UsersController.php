@@ -22,7 +22,13 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
 /*
 我们将用户对象 $user 通过 compact 方法转化为一个关联数组，并作为第二个参数传递给 view 方法，将数据与视图进行绑定
 */        
-        return view('users.show', compact('user'));
+
+//由于我们之前进行了模型关联，因此取出一个用户的所有微博可以通过以下方式：
+      //Eloquent 模型提供的 orderBy 方法，通过指定字段名和排序方式来对微博进行倒序排序。分页每页10条微博  
+        $statuses = $user->statuses()
+                           ->orderBy('created_at', 'desc')
+                           ->paginate(10);
+        return view('users.show', compact('user', 'statuses'));
     }
 
 //request （要求）用户输入的数据 用该参数来获得用户的所有输入数据
@@ -132,5 +138,6 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
         session()->flash('success', '恭喜你，激活成功！');
         return redirect()->route('users.show', [$user]);
     }
+
 
 }
