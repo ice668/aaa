@@ -9,7 +9,7 @@ use Auth;
 class StaticPagesController extends Controller
 {
     public function home()
-    {//使用 Auth::check() 来检查用户是否已登录。另外我们还对微博做了分页处理的操作，每页只显示 30 条微博
+    {//使用 Auth::check() 来检查用户是否已登录。另外我们还对微博做了分页处理的操作，每页只显示 30 条微博  定义了一个空数组 feed_items 来保存微博动态数据
         $feed_items = [];
         if (Auth::check()) {
             $feed_items = Auth::user()->feed()->paginate(30);}

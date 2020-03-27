@@ -15,8 +15,7 @@ class UsersController extends Controller
         return view('users.create');
     }
 /*
-Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）中的 Eloquent 模型类型声明
-由于 show() 方法传参时声明了类型 —— Eloquent 模型 User，对应的变量名 $user 会匹配路由片段中的 {user}，这样，Laravel 会自动注入与请求 URI 中传入的 ID 对应的用户模型实例*/
+Laravel 将会自动查找 ID 为 1 的用户并赋值到变量 $user 中，如果数据库中找不到对应的模型实例，会自动生成 HTTP 404 响应*/
     public function show(User $user)
     {
 /*
@@ -31,9 +30,9 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
         return view('users.show', compact('user', 'statuses'));
     }
 
-//request （要求）用户输入的数据 用该参数来获得用户的所有输入数据
+//request （要求）store 方法接受一个 Illuminate\Http\Request 实例参数，我们可以使用该参数来获得用户的所有输入数据
     public function store(Request $request)
-	{
+	{//（数据验证）
     $this->validate($request, [
         'name' => 'required|unique:users|max:50',
         'email' => 'required|email|unique:users|max:255',
@@ -43,8 +42,8 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
     $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            //'password' => bcrypt($request->password),
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
+            //'password' => $request->password,
         ]);
 
         $this->sendEmailConfirmationTo($user);
@@ -54,21 +53,23 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
 // 在 Laravel 中，如果要让一个已认证通过的用户实例进行登录，可以使用以下方法
         //Auth::login($user);
         $this->sendEmailConfirmationTo($user);
-    	session()->flash('info', '由于 HTTP 协议是无状态的，所以 Laravel 提供了一种用于临时保存用户数据的方法 - 会话（Session），并附带支持多种会话后端驱动，可通过统一的 API 进行使用~');
+    	session()->flash('info', '欢迎，您将在这里开启一段新的旅程~');
         /*（重新调配）*/
         return redirect()->route('users.show', [$user]);
     
 	}
 
+//该方法将用于发送邮件给指定用户。我们会在用户注册成功之后调用该方法来发送激活邮件
     protected function sendEmailConfirmationTo($user)
-    {
+    {   //第一个参数是包含邮件消息的视图名称。
         $view = 'emails.confirm';
+        //第二个参数是要传递给该视图的数据数组。
         $data = compact('user');
         $from = 'summer@example.com';
         $name = 'Summer';
         $to = $user->email;
         $subject = "感谢注册 Weibo 应用！请确认你的邮箱。";
-
+        //最后是一个用来接收邮件消息实例的闭包回调，我们可以在该回调中自定义邮件消息的发送者、接收者、邮件主题等信息。
         Mail::send($view, $data, function ($message) use ($to, $subject) {
             $message->to($to)->subject($subject);
         });
@@ -81,14 +82,16 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
          $this->authorize('update', $user);
         return view('users.edit', compact('user'));
     }
-
+//update 动作来处理用户提交的个人信息。
     public function update(User $user, Request $request)
     {
         $this->authorize('update', $user);
         $this->validate($request, [
             'name' => 'required|max:50',
-            'password' => 'required|confirmed|min:6'
+            'password' => 'nullable|confirmed|min:6'
         ]);
+
+        
 
         $user->update([
             'name' => $request->name,
@@ -99,7 +102,7 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
     }
 
     public function __construct()
-        { //auth认证 （中间件）
+        { //auth认证 （中间件）用户个人信息、创建用户页面、创建用户
         $this->middleware('auth', [            
             'except' => ['show', 'create', 'store','index','confirmEmail']
         ]);
@@ -129,8 +132,9 @@ Laravel 会自动解析定义在控制器方法（变量名匹配路由片段）
     public function confirmEmail($token)
     {
         $user = User::where('activation_token', $token)->firstOrFail();
-
+        //将该用户的激活状态改为 true
         $user->activated = true;
+        //激活令牌设置为空
         $user->activation_token = null;
         $user->save();
 

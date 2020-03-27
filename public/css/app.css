@@ -10898,7 +10898,7 @@ nav.navbar.navbar-expand-lg {
 }
 
 body div {
-  color: red;
+  color: #8A2BE2;
 }
 
 body h1 {
@@ -10918,7 +10918,7 @@ a:hover {
 footer {
   margin-top: 30px;
   padding-top: 5px;
-  border-top: 10px solid #EAEC1F;
+  border-top: 1px solid #eaeaea;
   color: #777;
   font-size: 13px;
   font-weight: bold;

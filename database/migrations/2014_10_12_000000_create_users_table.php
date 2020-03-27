@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 //可以看到在该文件里面定义了一个 CreateUsersTable 类，并继承自 Migration 基类。CreateUsersTable 有两个方法 up 和 down ：
-
 //当我们运行迁移时，up 方法会被调用；
 //当我们回滚迁移时，down 方法会被调用
 class CreateUsersTable extends Migration
@@ -23,10 +22,10 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('email')->unique();//指定唯一值
+            $table->timestamp('email_verified_at')->nullable();//时间戳，可为空意味着还未验证邮箱
             $table->string('password');
-            $table->rememberToken();
+            $table->rememberToken();//记得令牌，保存记着我
             $table->timestamps();
             //由 timestamps 方法创建了一个 created_at 和一个 updated_at 字段，分别用于保存用户的创建时间和更新时间。
         });
@@ -37,6 +36,8 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
+/* php artisan migrate:rollback 工匠迁移回滚2个表删除****php artisan migrate运行迁移*/    
+//chema 的 drop 方法来删除 users 表
     public function down()
     {
         Schema::dropIfExists('users');

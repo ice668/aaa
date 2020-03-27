@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container ">
-    <a class="navbar-brand" href="{{ route('home') }}">Weibo App</a>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #FB186B;">
+  <div class="container">
+    <a class="navbar-brand" href="{{ route('home') }}">新浪微博</a>
     <ul class="navbar-nav justify-content-end">
       @if (Auth::check())
         <li class="nav-item"><a class="nav-link" href="{{ route('users.index') }}">用户列表</a></li>

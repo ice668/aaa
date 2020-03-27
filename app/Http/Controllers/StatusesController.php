@@ -12,13 +12,13 @@ class StatusesController extends Controller
     {
         $this->middleware('auth');
     }
-
+//要求
     public function store(Request $request)
     {
         $this->validate($request, [
             'content' => 'required|max:140'
         ]);
-
+//地位
         Auth::user()->statuses()->create([
             'content' => $request['content']
         ]);
